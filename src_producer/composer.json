@@ -1,0 +1,12 @@
+{
+    "name": "fernando/src_producer",
+    "authors": [
+        {
+            "name": "Fernando Arconada",
+            "email": "fernando.arconada@gmail.com"
+        }
+    ],
+    "require": {
+        "php-amqplib/php-amqplib": "^2.7"
+    }
+}

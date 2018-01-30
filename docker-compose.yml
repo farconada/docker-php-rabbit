@@ -1,0 +1,36 @@
+version: "3"
+services:
+  mq:
+    container_name: poc_mq
+    image: rabbitmq:3.7-management
+    ports:
+      - '15672:15672'
+    networks:
+      - inter
+    logging:
+      driver: "none"
+  worker1:
+    container_name: poc_worker1
+    image: php:7.2-zts
+    volumes:
+      - ./src_worker:/var/php
+    working_dir: /var/php
+    command: "./wait-for-it.sh mq:5672 -- php index.php"
+    networks:
+      - inter
+    depends_on:
+      - mq
+  producer1:
+    container_name: poc_producer1
+    image: php:7.2-zts
+    volumes:
+      - ./src_producer:/var/php
+    working_dir: /var/php
+    command: "./wait-for-it.sh mq:5672 -- php index.php"
+    networks:
+      - inter
+    depends_on:
+      - mq
+
+networks:
+  inter:
