@@ -11,18 +11,22 @@ services:
       driver: "none"
   worker1:
     container_name: poc_worker1
-    image: php:7.2-zts
+    image: php-fer:7.2-zts
     volumes:
       - ./src_worker:/var/php
     working_dir: /var/php
-    command: "./wait-for-it.sh mq:5672 -- php index.php"
+    command: "./wait-for-it.sh mq:5672 -- ./index.php"
     networks:
       - inter
     depends_on:
       - mq
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./Dockerfile
   producer1:
     container_name: poc_producer1
-    image: php:7.2-zts
+    image: php-fer:7.2-zts
     volumes:
       - ./src_producer:/var/php
     working_dir: /var/php
@@ -31,6 +35,9 @@ services:
       - inter
     depends_on:
       - mq
+    build:
+      context: .
+      dockerfile: ./Dockerfile
 
 networks:
   inter:
