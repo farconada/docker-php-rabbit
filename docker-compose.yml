@@ -13,9 +13,9 @@ services:
     container_name: poc_worker1
     image: php-fer:7.2-zts
     volumes:
-      - ./src_worker:/var/php
+      - ./app:/var/php
     working_dir: /var/php
-    command: "./wait-for-it.sh mq:5672 -- ./index.php"
+    command: "./bin/wait-for-it.sh mq:5672 -- ./bin/console app:worker"
     networks:
       - inter
     depends_on:
@@ -28,9 +28,9 @@ services:
     container_name: poc_producer1
     image: php-fer:7.2-zts
     volumes:
-      - ./src_producer:/var/php
+      - ./app:/var/php
     working_dir: /var/php
-    command: "./wait-for-it.sh mq:5672 -- php index.php"
+    command: "./bin/wait-for-it.sh mq:5672 -- ./bin/console app:producer"
     networks:
       - inter
     depends_on:
